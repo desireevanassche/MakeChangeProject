@@ -3,12 +3,20 @@ package makechange;
 import java.util.Scanner;
 
 public class CashRegister {
+	static double tender, price, change;
+	static int quarter, dime, nickel, penny, twenty, ten, five, one;
 
 	static Scanner kb = new Scanner(System.in); // create scanner
 
 	public static void main(String[] args) {
-		double tender, price, change;
-		int quarter, dime, nickel, penny, twenty, ten, five, one;
+		
+		promptUser();
+		checkMoney();
+		changeLoop();
+
+	}
+
+	public static void promptUser() {
 
 		System.out.println("What is the price of your item? "); // price prompt
 		price = (int) (kb.nextDouble() * 100); // cast double to int | * 100 moves decimal place over two places,
@@ -19,6 +27,9 @@ public class CashRegister {
 
 		change = (int) (tender - price);
 
+	} // end prompt user
+
+	public static void changeLoop() {
 		if (tender > price) {
 			System.out.println("Chanage due: " + (tender - price) / 100); // /100 mainitains decimal placce movement
 
@@ -69,16 +80,22 @@ public class CashRegister {
 				change = change % 5;
 				System.out.println(nickel + " Nickles");
 			}
+			penny = (int) (change / 1);
 
-			penny = (int) (change);
-			System.out.println(penny + " Pennies");
+			if (penny > 0) {
+				penny = (int) (change);
+				System.out.println(penny + " Pennies");
 
+			}
 		}
-		if (tender < price) {
-			System.out.println("Not enough money tendered, please try again."); // not enough message
+	} // end change loop
 
+	public static void checkMoney() {
+		if (tender < price) {
+			System.out.println("ERROR. Not enough money tendered, please try again."); // not enough message
+			promptUser();
 		} else if (tender == change) {
 			System.out.println("This is the total amount due. Have a nice day!"); // correct amount message
 		}
-	}
+	} // end checkMoney
 }
